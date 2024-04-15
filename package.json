@@ -1,0 +1,21 @@
+{
+  "name": "lzpingpong",
+  "version": "1.0.0",
+  "description": "LayerZero v2 PingPong Example App",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "forge test -v",
+    "fmt:check": "forge fmt --check",
+    "fmt:fix": "forge fmt",
+    "lint": "solhint -w 3 'contracts/**/*.sol' 'test/**/*.sol' 'script/**/*.sol'"
+  },
+  "dependencies": {
+    "solhint": "4.5.4"
+  },
+  "author": "",
+  "license": "ISC"
+}
