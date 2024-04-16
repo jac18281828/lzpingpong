@@ -114,6 +114,23 @@
                 "kind": "test",
                 "isDefault": false
             }
+        },
+        {
+            "label": "deploy",
+            "type": "shell",
+            "command": "forge script ./script/PingPongOApp.s.sol:PingPongOAppScript --sig 'deploy()' --priority-gas-price 1 --slow --broadcast --rpc-url ${HOLESKY_URL} --private-key ${PRIVATE_KEY} --etherscan-api-key ${ETHERSCAN_API_KEY} --verify",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "LZ_ENDPOINT": "0x6edce65403992e310a62460808c4b910d972f10f",
+                    "OWNER": "0x2E1F5C7f87096fb7FfFbB6654Fc3b2CE303aEff5"
+                }
+            },
+            "dependsOn": "build",
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
         }
     ]
 }
