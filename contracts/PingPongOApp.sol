@@ -6,6 +6,10 @@ import { OptionsBuilder } from "@layerzerolabs/lz-evm-oapp-v2/contracts/oapp/lib
 
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
+/**
+ * @title PingPongOApp
+ * @dev This contract demonstrates how to create an OApp that sends a message to another chain.
+ */
 contract PingPongOApp is OApp {
     string public constant PING_MESSAGE = "ping";
 
@@ -19,12 +23,19 @@ contract PingPongOApp is OApp {
 
     constructor(address _endpoint, address _owner) OApp(_endpoint, _owner) Ownable(_owner) { }
 
+    /**
+     * @dev Set the gas to be used when receiving messages on destination chain
+     * @param _gas the gas to be used
+     */
     function setReceiveGas(uint128 _gas) external onlyOwner {
         _lzReceiveGas = _gas;
         emit LZReceiveGasUpdate(_gas);
     }
 
-    // Sends a message from the source to destination chain.
+    /**
+     * send a ping from the current chain to the destination chain
+     * @param _dstEid the destination chain's endpoint ID
+     */
     function sendPing(uint32 _dstEid) external payable {
         bytes memory options = OptionsBuilder.newOptions();
         options = OptionsBuilder.addExecutorLzReceiveOption(options, _lzReceiveGas, 0);
@@ -41,21 +52,25 @@ contract PingPongOApp is OApp {
         emit SendPing(_dstEid);
     }
 
+    /**
+     * @dev This function is called by the LayerZero protocol when a message is received.
+     * @param _payload encoded message payload being received.
+     */
     function _lzReceive(
-        Origin calldata _origin, // struct containing info about the message sender
-        bytes32 _guid, // global packet identifier
+        Origin calldata, // struct containing info about the message sender
+        bytes32, // global packet identifier
         bytes calldata _payload, // encoded message payload being received
-        address _executor, // the Executor address.
-        bytes calldata _extraData// arbitrary data appended by the Executor
+        address, // the Executor address.
+        bytes calldata // arbitrary data appended by the Executor
     )
         internal
         override
     {
-        bytes32 messageDigest = abi.decode(payload, (bytes32));
+        bytes32 messageDigest = abi.decode(_payload, (bytes32));
         if (messageDigest == keccak256(abi.encodePacked(PING_MESSAGE))) {
             emit Ping(PING_MESSAGE);
         } else {
-            super._lzReceive(_origin, _guid, _payload, _executor, _extraData);
+            revert InvalidMessage();
         }
     }
 }

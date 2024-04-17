@@ -23,3 +23,4 @@ RUN forge install
 RUN forge fmt --check
 # RUN python3 -m slither . --exclude-dependencies || true
 RUN npm run lint
+RUN forge build
