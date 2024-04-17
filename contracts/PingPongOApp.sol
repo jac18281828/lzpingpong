@@ -42,22 +42,20 @@ contract PingPongOApp is OApp {
     }
 
     function _lzReceive(
-        Origin calldata, // struct containing info about the message sender
-        bytes32, // global packet identifier
-        bytes calldata payload, // encoded message payload being received
-        address, // the Executor address.
-        bytes calldata // arbitrary data appended by the Executor
+        Origin calldata _origin, // struct containing info about the message sender
+        bytes32 _guid, // global packet identifier
+        bytes calldata _payload, // encoded message payload being received
+        address _executor, // the Executor address.
+        bytes calldata _extraData// arbitrary data appended by the Executor
     )
         internal
         override
     {
         bytes32 messageDigest = abi.decode(payload, (bytes32));
-        bytes memory options = OptionsBuilder.newOptions();
-        options = OptionsBuilder.addExecutorLzReceiveOption(options, _lzReceiveGas, 0);
         if (messageDigest == keccak256(abi.encodePacked(PING_MESSAGE))) {
             emit Ping(PING_MESSAGE);
         } else {
-            revert InvalidMessage();
+            super._lzReceive(_origin, _guid, _payload, _executor, _extraData);
         }
     }
 }

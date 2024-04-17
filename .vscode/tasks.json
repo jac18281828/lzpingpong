@@ -118,7 +118,7 @@
         {
             "label": "deploy",
             "type": "shell",
-            "command": "forge script ./script/PingPongOApp.s.sol:PingPongOAppScript --sig 'deploy()' --priority-gas-price 1 --slow --broadcast --rpc-url ${HOLESKY_URL} --private-key ${PRIVATE_KEY} --etherscan-api-key ${ETHERSCAN_API_KEY} --verify",
+            "command": "forge script ./script/PingPongOApp.s.sol:PingPongOAppScript --sig 'deploy()' --priority-gas-price 1 --slow --broadcast --rpc-url ${RPC_URL} --private-key ${PRIVATE_KEY} --etherscan-api-key ${ETHERSCAN_API_KEY} --verify",
             "options": {
                 "cwd": "${workspaceFolder}",
                 "env": {
